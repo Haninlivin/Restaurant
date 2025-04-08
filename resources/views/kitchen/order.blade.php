@@ -6,8 +6,14 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
+          <div class="col-lg-12 col-sm-6 d-flex justify-content-between">
             <h1 class="m-0">Kitchen Admin Dashboard</h1>
+            <div>
+              <form action="logout" method="POST">
+                @csrf
+                <button class="btn btn-info" type="submit">Logout</button>
+              </form>
+            </div>
           </div><!-- /.col -->
           <div class="col-sm-6">
           </div><!-- /.col -->

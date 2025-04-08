@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DishCreateRequest;
+use App\Http\Requests\DishUpdateRequest;
+use App\Models\Category;
 use App\Models\Dish;
 use Illuminate\Http\Request;
 
@@ -21,15 +24,25 @@ class DishesController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('kitchen.dish_create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(DishCreateRequest $request)
     {
-        //
+        $dish = new Dish();
+        $dish->name = $request->name;
+        $dish->category_id = $request->category;
+
+        $imageName = date('YmdHis') . "." . request()->image_path->getClientOriginalExtension();
+        request()->image_path->move(public_path('images'), $imageName);
+        $dish->image = $imageName;
+
+        $dish->save();
+        return redirect('dish')->with('message', 'Dish created successfully');
     }
 
     /**
@@ -43,24 +56,36 @@ class DishesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Dish $dish)
     {
-        //
+        $categories = Category::all();
+        return view('kitchen.dish_edit', compact('dish', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(DishUpdateRequest $request, Dish $dish)
     {
-        //
+        $dish->name = $request->name;
+        $dish->category_id = $request->category;
+
+        if ($request->image_path) {
+            $imageName = date('YmdHis') . "." . request()->image_path->getClientOriginalExtension();
+            request()->image_path->move(public_path('images'), $imageName);
+            $dish->image = $imageName;
+        }
+        $dish->save();
+
+        return redirect('dish')->with('message', 'Dish Updated Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Dish $dish)
     {
-        //
+        $dish->delete();
+        return redirect('dish')->with('message', 'Dish deleted successfully');
     }
 }
