@@ -17,7 +17,10 @@ class OrderController extends Controller
     {
         $dishes = Dish::orderBy('id', 'desc')->get();
         $tables = Table::all();
-        return view('order_form', compact('dishes', 'tables'));
+        $rawStatus = config('orderrequest.order_status');
+        $status = array_flip($rawStatus);
+        $orders = Order::where('status', 4)->get();
+        return view('order_form', compact('dishes', 'tables', 'status', 'orders'));
     }
     public function submit(Request $request)
     {
@@ -45,5 +48,12 @@ class OrderController extends Controller
         $order->status = config('orderrequest.order_status.new');
 
         $order->save();
+    }
+
+    public function serve(Order $order)
+    {
+        $order->status = config('orderrequest.order_status.done');
+        $order->save();
+        return redirect('/')->with('message', 'This order serve to customers!');
     }
 }

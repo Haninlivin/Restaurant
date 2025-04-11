@@ -49,13 +49,13 @@
                             <tbody>
                               @foreach ($orders as $order)
                               <tr>
-                                <td> {{ $order->order_id }} </td>
+                                <td> {{ $order->dish->name }} </td>
                                 <td> {{ $order->table_id }} </td>
                                 <td> {{ $status[$order->status] }} </td>
                                 <td>
                                   <div>
+                                    <a href="/order/{{ $order->id }}/ready" class="btn btn-primary">Ready</a>
                                     <a href="/order/{{ $order->id }}/approve" class="btn btn-info">Approve</a>
-                                    <a href="/order/{{ $order->id }}/done" class="btn btn-success">Done</a>
                                     <a href="/order/{{ $order->id }}/cancel" class="btn btn-danger">Cancel</a>
                                   </div>
                                 </td>
@@ -79,6 +79,7 @@
     $(function () {
         $('#orders').DataTable({
             "paging": true,
+            "searching":false,
             "lengthChange": false,
             "pageLength":10,
             "ordering": true,
