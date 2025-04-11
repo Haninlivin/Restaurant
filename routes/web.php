@@ -15,6 +15,8 @@ Auth::routes([
 Route::get('/', [OrderController::class, 'index'])->name('order.form');
 Route::post('order_submit', [OrderController::class, 'submit'])->name('order.submit');
 
+Route::get('order', [DishesController::class, 'order'])->name('kitchen.order');
+
 Route::resource('dish', DishesController::class)
     ->name('edit', 'dish.edit')
     ->name('destroy', 'dish.delete')

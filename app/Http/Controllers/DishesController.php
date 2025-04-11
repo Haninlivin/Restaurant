@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dish;
+use App\Models\Order;
+use App\Models\Category;
+use Illuminate\Http\Request;
 use App\Http\Requests\DishCreateRequest;
 use App\Http\Requests\DishUpdateRequest;
-use App\Models\Category;
-use App\Models\Dish;
-use Illuminate\Http\Request;
 
 class DishesController extends Controller
 {
@@ -87,5 +88,13 @@ class DishesController extends Controller
     {
         $dish->delete();
         return redirect('dish')->with('message', 'Dish deleted successfully');
+    }
+
+    public function order()
+    {
+        $rawStatus = config('orderrequest.order_status');
+        $status = array_flip($rawStatus);
+        $orders = Order::all();
+        return view('kitchen.order', compact('orders', 'status'));
     }
 }

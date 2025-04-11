@@ -18,6 +18,11 @@
 <body>
     <div class="card">
         <div class="card-body">
+          @if (session('message'))
+            <div class="alert alert-success">
+              {{ session('message') }}
+            </div>
+          @endif
             <div class="row">
                 <div class="col-12">
                   <h4>Order Form</h4>
@@ -56,6 +61,14 @@
                                 </div>
                               </div>
                               @endforeach
+                            </div>
+
+                            <div class="form-group">
+                              <select name="table" id="">
+                              @foreach ($tables as $table)
+                              <option value="{{ $table->id }}"> {{ $table->number }} </option>
+                              @endforeach
+                              </select>
                             </div>
                             <input type="submit" class="btn btn-success" value="Submit">                      
                            </form>
